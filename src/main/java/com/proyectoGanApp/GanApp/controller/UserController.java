@@ -21,9 +21,9 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public UserEntity saveUser(@RequestBody UserEntity user){
-        String encodepass = Base64.getEncoder().encodeToString(user.getPassword().getBytes());
-        user.setPassword(encodepass);
-        return userRepository.save(user);
+    public UserEntity saveUser(@RequestBody UserEntity userEntity){
+        String encodepass = Base64.getEncoder().encodeToString(userEntity.getPassword().getBytes());
+        userEntity.setPassword(encodepass);
+        return userRepository.save(userEntity);
     }
 }
