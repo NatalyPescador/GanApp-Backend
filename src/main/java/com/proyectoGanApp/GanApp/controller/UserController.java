@@ -16,7 +16,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("/users")
-    public List<UserEntity> listaUsuarios(){
+    public List<UserEntity> getUsers(){
         return userRepository.findAll();
     }
 
@@ -26,4 +26,15 @@ public class UserController {
         userEntity.setPassword(encodepass);
         return userRepository.save(userEntity);
     }
+
+    @PostMapping("/login")
+    public String logIn() {
+        return "Login from public endpoint";
+    }
+
+    @PostMapping("/signin")
+    public String signIn() {
+        return "Register from public endpoint";
+    }
+
 }
