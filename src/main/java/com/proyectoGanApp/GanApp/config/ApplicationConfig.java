@@ -2,7 +2,6 @@ package com.proyectoGanApp.GanApp.config;
 
 import com.proyectoGanApp.GanApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
