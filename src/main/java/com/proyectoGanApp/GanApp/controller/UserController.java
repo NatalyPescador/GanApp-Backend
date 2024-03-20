@@ -4,7 +4,6 @@ import com.proyectoGanApp.GanApp.model.UserEntity;
 import com.proyectoGanApp.GanApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Base64;
 import java.util.List;
 
@@ -20,10 +19,4 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping("/users")
-    public UserEntity saveUser(@RequestBody UserEntity userEntity){
-        String encodepass = Base64.getEncoder().encodeToString(userEntity.getPassword().getBytes());
-        userEntity.setPassword(encodepass);
-        return userRepository.save(userEntity);
-    }
 }
