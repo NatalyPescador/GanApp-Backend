@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -18,16 +19,25 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "Nombre_Completo", nullable = false)
+    @Column(name = "nombre_completo", nullable = false)
     private String nombreCompleto;
 
-    @Column(name = "Correo", nullable = false)
+    @Column(name = "correo", nullable = false)
     private String correo;
 
-    @Column(name = "Numero_De_Celular", nullable = false)
+    @Column(name = "numero_de_celular", nullable = false)
     private String numeroTelefono;
 
     @Column(name = "password", nullable = false)
     private String password;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }
+
