@@ -1,10 +1,7 @@
 package com.proyectoGanApp.GanApp.controller;
 
-import com.proyectoGanApp.GanApp.auth.AuthResponse;
-import com.proyectoGanApp.GanApp.auth.ForgotPasswordRequest;
+import com.proyectoGanApp.GanApp.auth.*;
 import com.proyectoGanApp.GanApp.service.AuthService;
-import com.proyectoGanApp.GanApp.auth.LoginRequest;
-import com.proyectoGanApp.GanApp.auth.RegisterRequest;
 import com.proyectoGanApp.GanApp.model.UserEntity;
 import com.proyectoGanApp.GanApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +35,13 @@ public class UserController {
         return ResponseEntity.ok(authService.login(request));
     }
 
-    @PostMapping("recuperarcontraseña")
+    @PostMapping("/olvidarcontraseña")
     public ResponseEntity<AuthResponse> forgotPassword(@RequestBody ForgotPasswordRequest request) {
         return ResponseEntity.ok(authService.forgotPassword(request));
+    }
 
+    @PostMapping("restablecercontraseña")
+    public ResponseEntity<AuthResponse> resetPassword(@RequestBody ResetPasswordRequest request) {
+        return ResponseEntity.ok(authService.resetPassword(request));
     }
 }

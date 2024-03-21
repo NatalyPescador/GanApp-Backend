@@ -1,12 +1,11 @@
 package com.proyectoGanApp.GanApp.service;
 
-import com.proyectoGanApp.GanApp.auth.AuthResponse;
-import com.proyectoGanApp.GanApp.auth.ForgotPasswordRequest;
-import com.proyectoGanApp.GanApp.auth.LoginRequest;
-import com.proyectoGanApp.GanApp.auth.RegisterRequest;
+import com.proyectoGanApp.GanApp.auth.*;
 import com.proyectoGanApp.GanApp.jwt.JwtService;
+import com.proyectoGanApp.GanApp.model.PasswordResetToken;
 import com.proyectoGanApp.GanApp.model.TipoUsuario;
 import com.proyectoGanApp.GanApp.model.UserEntity;
+import com.proyectoGanApp.GanApp.repository.PasswordResetTokenRepository;
 import com.proyectoGanApp.GanApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -17,6 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -26,15 +28,38 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JavaMailSender javaMailSender;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
+
+    public AuthResponse resetPassword(ResetPasswordRequest request) {
+        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(request.getToken());
+
+        UserEntity usuario = passwordResetToken.getUsuario();
+        usuario.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(usuario);
+
+        passwordResetTokenRepository.delete(passwordResetToken);
+
+        String token = jwtService.getToken(usuario);
+        return AuthResponse.builder()
+                .token(token)
+                .build();
+    }
 
     public AuthResponse forgotPassword(ForgotPasswordRequest request) {
-        UserDetails user = userRepository.findByCorreo(request.getCorreo()).orElseThrow();
+        UserEntity user = userRepository.findByCorreo(request.getCorreo()).orElseThrow();
+
+        String randomToken = UUID.randomUUID().toString();
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        passwordResetToken.setToken(randomToken);
+        passwordResetToken.setUsuario(user);
+        passwordResetToken.setExpiryDate(new Date(System.currentTimeMillis() + 3600000)); // Caduca en 1 hora
+        passwordResetTokenRepository.save(passwordResetToken);
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("ganapp2024@gmail.com");
         message.setTo(request.getCorreo());
         message.setSubject("Recuperación de contraseña");
-        message.setText("Ingresa el siguiente código para restablecer tu contraseña");
+        message.setText("Ingresa el siguiente código para restablecer tu contraseña" + randomToken);
 
         javaMailSender.send(message);
 
