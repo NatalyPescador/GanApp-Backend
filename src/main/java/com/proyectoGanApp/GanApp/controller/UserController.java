@@ -1,7 +1,8 @@
 package com.proyectoGanApp.GanApp.controller;
 
 import com.proyectoGanApp.GanApp.auth.AuthResponse;
-import com.proyectoGanApp.GanApp.auth.AuthService;
+import com.proyectoGanApp.GanApp.auth.ForgotPasswordRequest;
+import com.proyectoGanApp.GanApp.service.AuthService;
 import com.proyectoGanApp.GanApp.auth.LoginRequest;
 import com.proyectoGanApp.GanApp.auth.RegisterRequest;
 import com.proyectoGanApp.GanApp.model.UserEntity;
@@ -35,5 +36,11 @@ public class UserController {
     @PostMapping("/iniciosesion")
     public ResponseEntity<AuthResponse> logIn(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("recuperarcontraseña")
+    public ResponseEntity<AuthResponse> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        return ResponseEntity.ok(authService.forgotPassword(request));
+
     }
 }
