@@ -59,7 +59,13 @@ public class AuthService {
         message.setFrom("ganapp2024@gmail.com");
         message.setTo(request.getCorreo());
         message.setSubject("Recuperación de contraseña");
-        message.setText("Ingresa el siguiente código para restablecer tu contraseña" + randomToken);
+        message.setText("Señor(a) usuario(a) " + user.getNombreCompleto() + "\n\n\n" +
+                "Hemos recibido una solicitud para restablecer su contraseña de acceso a GanApp.\n\n" +
+                "Por su seguridad hemos generado una contraseña temporal que le permitirá cambiar su contraseña\n\n" +
+                "Ingrese el siguiente código para restablecer tu contraseña: " + randomToken + "\n\n" +
+                "Tenga en cuenta que este código solamente está disponible por un lapso de 1 hora.\n\n\n" +
+                "Cordialmente,\n" +
+                "Equipo de soporte GanApp");
 
         javaMailSender.send(message);
 
