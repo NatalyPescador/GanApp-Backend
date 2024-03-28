@@ -30,17 +30,17 @@ public class UserController {
         return ResponseEntity.ok(authService.register(request));
     }
 
-    @PostMapping("/iniciosesion")
+    @PostMapping("/inicio-sesion")
     public ResponseEntity<AuthResponse> logIn(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
-    @PostMapping("/olvidarcontraseña")
+    @PostMapping("/olvidar-contraseña")
     public ResponseEntity<AuthResponse> forgotPassword(@RequestBody ForgotPasswordRequest request) {
         return ResponseEntity.ok(authService.forgotPassword(request));
     }
 
-    @PostMapping("restablecercontraseña")
+    @PostMapping("restablecer-contraseña")
     public ResponseEntity<AuthResponse> resetPassword(@RequestBody ResetPasswordRequest request) {
         return ResponseEntity.ok(authService.resetPassword(request));
     }

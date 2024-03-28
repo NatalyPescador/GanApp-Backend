@@ -31,6 +31,10 @@ public class AuthService {
     private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     public AuthResponse resetPassword(ResetPasswordRequest request) {
+        if (!request.getNewPassword().equals(request.getConfirmedPassword())) {
+            throw new RuntimeException("Las contraseñas no coinciden");
+        }
+
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(request.getToken());
 
         UserEntity usuario = passwordResetToken.getUsuario();
@@ -48,13 +52,24 @@ public class AuthService {
     public AuthResponse forgotPassword(ForgotPasswordRequest request) {
         UserEntity user = userRepository.findByCorreo(request.getCorreo()).orElseThrow();
 
-        String randomToken = UUID.randomUUID().toString();
+        String randomToken = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 6);
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         passwordResetToken.setToken(randomToken);
         passwordResetToken.setUsuario(user);
         passwordResetToken.setExpiryDate(new Date(System.currentTimeMillis() + 3600000)); // Caduca en 1 hora
         passwordResetTokenRepository.save(passwordResetToken);
 
+        SimpleMailMessage message = getSimpleMailMessage(request, user, randomToken);
+
+        javaMailSender.send(message);
+
+        String token = jwtService.getToken(user);
+        return AuthResponse.builder()
+                .token(token)
+                .build();
+    }
+
+    private static SimpleMailMessage getSimpleMailMessage(ForgotPasswordRequest request, UserEntity user, String randomToken) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("ganapp2024@gmail.com");
         message.setTo(request.getCorreo());
@@ -66,14 +81,9 @@ public class AuthService {
                 "Tenga en cuenta que este código solamente está disponible por un lapso de 1 hora.\n\n\n" +
                 "Cordialmente,\n" +
                 "Equipo de soporte GanApp");
-
-        javaMailSender.send(message);
-
-        String token = jwtService.getToken(user);
-        return AuthResponse.builder()
-                .token(token)
-                .build();
+        return message;
     }
+
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCorreo(), request.getPassword()));
         UserDetails user = userRepository.findByCorreo(request.getCorreo()).orElseThrow();
