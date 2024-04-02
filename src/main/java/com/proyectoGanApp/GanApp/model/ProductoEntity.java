@@ -28,8 +28,8 @@ public class ProductoEntity {
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
 
-    @Column(name = "imagenes", nullable = false)
-    private String imagenes;
+    @Column(name = "imagen", nullable = false) // Nombre de la imagen
+    private String imagen;
 
     @Column(name = "tipo_servicio_id", nullable = false)
     private Long tipoServicioId;
