@@ -40,7 +40,5 @@ public class ProductoEntity {
     @Column(name = "usuario_id", nullable = false)
     private Long usuarioId;
 
-
-
 }
 
