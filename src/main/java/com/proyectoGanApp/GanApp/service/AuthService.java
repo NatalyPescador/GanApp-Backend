@@ -8,6 +8,7 @@ import com.proyectoGanApp.GanApp.model.UserEntity;
 import com.proyectoGanApp.GanApp.repository.PasswordResetTokenRepository;
 import com.proyectoGanApp.GanApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -86,7 +89,7 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCorreo(), request.getPassword()));
-        UserDetails user = userRepository.findByCorreo(request.getCorreo()).orElseThrow();
+        UserDetails user = userRepository.findByCorreo(request.getCorreo()).orElseThrow(() -> new RuntimeException("Usuario o contraseña incorrecto"));
         String token = jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)
@@ -94,19 +97,22 @@ public class AuthService {
     }
 
     public AuthResponse register(RegisterRequest request) {
-        UserEntity user = UserEntity.builder()
-                .nombreCompleto(request.getNombreCompleto())
-                .correo(request.getCorreo())
-                .numeroTelefono(request.getNumeroTelefono())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .tipoUsuario(TipoUsuario.USER)
-                .build();
+        try {
+            UserEntity user = UserEntity.builder()
+                    .nombreCompleto(request.getNombreCompleto())
+                    .correo(request.getCorreo())
+                    .numeroTelefono(request.getNumeroTelefono())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .tipoUsuario(TipoUsuario.USER)
+                    .build();
 
-        userRepository.save(user);
+            userRepository.save(user);
 
-        return AuthResponse.builder()
-                .token(jwtService.getToken(user))
-                .build();
-
+            return AuthResponse.builder()
+                    .token(jwtService.getToken(user))
+                    .build();
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("El correo ingresado ya se encuentra registrado");
+        }
     }
 }
