@@ -22,6 +22,11 @@ public class CategoriaController {
     public List<CategoriaEntity> listarCategoria()
     { return categoriaRepository.findAll(); }
 
+    @GetMapping("/categoria/{typeServiceId}")
+    public List<CategoriaEntity> listarCategorias(@PathVariable Long typeServiceId){
+        return categoriaRepository.getCategoryByServiceType(typeServiceId);
+    }
+
     @PostMapping("/categoria")
     public CategoriaEntity saveCategoria (@RequestBody CategoriaEntity categoriaEntity){
         return categoriaRepository.save(categoriaEntity);
