@@ -13,13 +13,12 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -40,6 +39,10 @@ public class AuthService {
 
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(request.getToken());
 
+        if (passwordResetToken == null || !passwordResetToken.getToken().equals(request.getToken())) {
+            throw new RuntimeException("El código ingresado es inválido");
+        }
+
         UserEntity usuario = passwordResetToken.getUsuario();
         usuario.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(usuario);
@@ -53,7 +56,8 @@ public class AuthService {
     }
 
     public AuthResponse forgotPassword(ForgotPasswordRequest request) {
-        UserEntity user = userRepository.findByCorreo(request.getCorreo()).orElseThrow();
+        UserEntity user = userRepository.findByCorreo(request.getCorreo())
+                .orElseThrow(() -> new RuntimeException("Usuario no registrado"));
 
         String randomToken = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 6);
         PasswordResetToken passwordResetToken = new PasswordResetToken();
@@ -88,8 +92,15 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCorreo(), request.getPassword()));
-        UserDetails user = userRepository.findByCorreo(request.getCorreo()).orElseThrow(() -> new RuntimeException("Usuario o contraseña incorrecto"));
+        UserDetails user = userRepository.findByCorreo(request.getCorreo())
+                .orElseThrow(() -> new RuntimeException("Usuario no registrado"));
+
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCorreo(), request.getPassword()));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Usuario o contraseña incorrecto");
+        }
+
         String token = jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)
