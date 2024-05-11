@@ -18,7 +18,7 @@ public class ReviewEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resenasId;
 
-    @Column(name = "resenna", nullable = false)
+    @Column(name = "resenna", nullable = false, columnDefinition = "TEXT")
     private String resena;
 
     @Column(name = "producto_id", nullable = false)
