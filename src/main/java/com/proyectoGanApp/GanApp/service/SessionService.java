@@ -1,7 +1,7 @@
 package com.proyectoGanApp.GanApp.service;
 
-import com.proyectoGanApp.GanApp.auth.*;
-import com.proyectoGanApp.GanApp.jwt.JwtService;
+import com.proyectoGanApp.GanApp.dto.*;
+import com.proyectoGanApp.GanApp.jwt.JwtComponent;
 import com.proyectoGanApp.GanApp.model.PasswordResetToken;
 import com.proyectoGanApp.GanApp.model.TipoUsuario;
 import com.proyectoGanApp.GanApp.model.UserEntity;
@@ -23,16 +23,16 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class SessionService {
 
     private final UserRepository userRepository;
-    private final JwtService jwtService;
+    private final JwtComponent jwtComponent;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JavaMailSender javaMailSender;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
 
-    public AuthResponse resetPassword(ResetPasswordRequest request) {
+    public ResponseDto resetPassword(ResetPasswordDto request) {
         if (!request.getNewPassword().equals(request.getConfirmedPassword())) {
             throw new RuntimeException("Las contraseñas no coinciden");
         }
@@ -49,13 +49,13 @@ public class AuthService {
 
         passwordResetTokenRepository.delete(passwordResetToken);
 
-        String token = jwtService.getToken(usuario);
-        return AuthResponse.builder()
+        String token = jwtComponent.getToken(usuario);
+        return ResponseDto.builder()
                 .token(token)
                 .build();
     }
 
-    public AuthResponse forgotPassword(ForgotPasswordRequest request) {
+    public ResponseDto forgotPassword(ForgotPasswordDto request) {
         UserEntity user = userRepository.findByCorreo(request.getCorreo())
                 .orElseThrow(() -> new RuntimeException("Usuario no registrado"));
 
@@ -70,13 +70,13 @@ public class AuthService {
 
         javaMailSender.send(message);
 
-        String token = jwtService.getToken(user);
-        return AuthResponse.builder()
+        String token = jwtComponent.getToken(user);
+        return ResponseDto.builder()
                 .token(token)
                 .build();
     }
 
-    private static SimpleMailMessage getSimpleMailMessage(ForgotPasswordRequest request, UserEntity user, String randomToken) {
+    private static SimpleMailMessage getSimpleMailMessage(ForgotPasswordDto request, UserEntity user, String randomToken) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("ganapp2024@gmail.com");
         message.setTo(request.getCorreo());
@@ -91,7 +91,7 @@ public class AuthService {
         return message;
     }
 
-    public AuthResponse login(LoginRequest request) {
+    public ResponseDto login(LoginDto request) {
         UserDetails user = userRepository.findByCorreo(request.getCorreo())
                 .orElseThrow(() -> new RuntimeException("Usuario no registrado"));
 
@@ -101,13 +101,13 @@ public class AuthService {
             throw new RuntimeException("Usuario o contraseña incorrecto");
         }
 
-        String token = jwtService.getToken(user);
-        return AuthResponse.builder()
+        String token = jwtComponent.getToken(user);
+        return ResponseDto.builder()
                 .token(token)
                 .build();
     }
 
-    public AuthResponse register(RegisterRequest request) {
+    public ResponseDto register(RegisterDto request) {
         try {
             UserEntity user = UserEntity.builder()
                     .nombreCompleto(request.getNombreCompleto())
@@ -119,8 +119,8 @@ public class AuthService {
 
             userRepository.save(user);
 
-            return AuthResponse.builder()
-                    .token(jwtService.getToken(user))
+            return ResponseDto.builder()
+                    .token(jwtComponent.getToken(user))
                     .build();
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("El correo ingresado ya se encuentra registrado");
