@@ -1,7 +1,7 @@
 package com.proyectoGanApp.GanApp.controller;
 
-import com.proyectoGanApp.GanApp.auth.*;
-import com.proyectoGanApp.GanApp.service.AuthService;
+import com.proyectoGanApp.GanApp.dto.*;
+import com.proyectoGanApp.GanApp.service.SessionService;
 import com.proyectoGanApp.GanApp.model.UserEntity;
 import com.proyectoGanApp.GanApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-    private final AuthService authService;
+    private final SessionService sessionService;
 
     @GetMapping("/usuarios")
     public List<UserEntity> getUsers(){
@@ -27,50 +27,50 @@ public class UserController {
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<AuthResponse> signIn(@RequestBody RegisterRequest request) {
+    public ResponseEntity<ResponseDto> signIn(@RequestBody RegisterDto request) {
         try {
-            AuthResponse response = authService.register(request);
+            ResponseDto response = sessionService.register(request);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(AuthResponse.builder().errorMessage(e.getMessage()).build());
+                    .body(ResponseDto.builder().errorMessage(e.getMessage()).build());
         }
     }
 
     @PostMapping("/inicio-sesion")
-    public ResponseEntity<AuthResponse> logIn(@RequestBody LoginRequest request) {
+    public ResponseEntity<ResponseDto> logIn(@RequestBody LoginDto request) {
         try {
-            AuthResponse response = authService.login(request);
+            ResponseDto response = sessionService.login(request);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(AuthResponse.builder().errorMessage(e.getMessage()).build());
+                    .body(ResponseDto.builder().errorMessage(e.getMessage()).build());
         }
     }
 
     @PostMapping("/olvidar-contraseña")
-    public ResponseEntity<AuthResponse> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+    public ResponseEntity<ResponseDto> forgotPassword(@RequestBody ForgotPasswordDto request) {
         try {
-            AuthResponse response = authService.forgotPassword(request);
+            ResponseDto response = sessionService.forgotPassword(request);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(AuthResponse.builder().errorMessage(e.getMessage()).build());
+                    .body(ResponseDto.builder().errorMessage(e.getMessage()).build());
         }
     }
 
     @PostMapping("restablecer-contraseña")
-    public ResponseEntity<AuthResponse> resetPassword(@RequestBody ResetPasswordRequest request) {
+    public ResponseEntity<ResponseDto> resetPassword(@RequestBody ResetPasswordDto request) {
         try {
-            AuthResponse response = authService.resetPassword(request);
+            ResponseDto response = sessionService.resetPassword(request);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(AuthResponse.builder().errorMessage(e.getMessage()).build());
+                    .body(ResponseDto.builder().errorMessage(e.getMessage()).build());
         }
     }
 }

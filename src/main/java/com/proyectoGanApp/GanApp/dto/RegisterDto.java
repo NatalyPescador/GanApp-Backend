@@ -1,4 +1,4 @@
-package com.proyectoGanApp.GanApp.auth;
+package com.proyectoGanApp.GanApp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
+@AllArgsConstructor
+public class RegisterDto {
+    String nombreCompleto;
     String correo;
+    String numeroTelefono;
     String password;
 }
