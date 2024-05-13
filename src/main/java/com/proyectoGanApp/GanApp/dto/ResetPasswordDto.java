@@ -1,4 +1,4 @@
-package com.proyectoGanApp.GanApp.auth;
+package com.proyectoGanApp.GanApp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResetPasswordRequest {
+public class ResetPasswordDto {
     String newPassword;
     String confirmedPassword;
     String token;

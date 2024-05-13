@@ -1,4 +1,4 @@
-package com.proyectoGanApp.GanApp.auth;
+package com.proyectoGanApp.GanApp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponse {
+public class ResponseDto {
     String token;
+    private String errorMessage;
 }
