@@ -1,5 +1,6 @@
 package com.proyectoGanApp.GanApp.model;
 
+import com.proyectoGanApp.GanApp.enums.MessageStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -33,7 +34,8 @@ public class MessagesEntity {
         timeStamp = LocalDateTime.now();
     }
 
+    @Enumerated(EnumType.STRING)
     @Column(name="status", nullable = false)
-    private String status;
+    private MessageStatus status;
 
 }
