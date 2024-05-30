@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -28,8 +27,8 @@ public class ProductoEntity {
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
 
-    @Column(name = "imagen", nullable = false) // Nombre de la imagen
-    private String imagen;
+    @Column(name = "imagen_url", nullable = false) // Cambio de nombre a "imagen_url"
+    private String imageUri; // Nombre más descriptivo para una URL de imagen
 
     @Column(name = "tipo_servicio_id", nullable = false)
     private Long tipoServicioId;
@@ -39,6 +38,4 @@ public class ProductoEntity {
 
     @Column(name = "usuario_id", nullable = false)
     private Long usuarioId;
-
 }
-
