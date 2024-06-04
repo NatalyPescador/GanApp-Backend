@@ -7,4 +7,8 @@ public class ChatRequestDTO {
 
     private Long productId;
 
+    private Long userId;
+
+    private Long receiverId;
+
 }

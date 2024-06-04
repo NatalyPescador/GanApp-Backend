@@ -17,6 +17,12 @@ public class ChatsEntity {
     @Column(name = "product_id", nullable = false)
     private Long productId;
 
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
+    @Column(name = "receiver_id", nullable = false)
+    private Long receiverId;
+
     @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 

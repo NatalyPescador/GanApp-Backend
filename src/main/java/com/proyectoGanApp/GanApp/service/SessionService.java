@@ -3,7 +3,7 @@ package com.proyectoGanApp.GanApp.service;
 import com.proyectoGanApp.GanApp.dto.*;
 import com.proyectoGanApp.GanApp.jwt.JwtComponent;
 import com.proyectoGanApp.GanApp.model.PasswordResetToken;
-import com.proyectoGanApp.GanApp.model.TipoUsuario;
+import com.proyectoGanApp.GanApp.enums.TipoUsuario;
 import com.proyectoGanApp.GanApp.model.UserEntity;
 import com.proyectoGanApp.GanApp.repository.PasswordResetTokenRepository;
 import com.proyectoGanApp.GanApp.repository.UserRepository;
