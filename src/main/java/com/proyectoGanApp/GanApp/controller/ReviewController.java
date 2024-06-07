@@ -1,15 +1,9 @@
 package com.proyectoGanApp.GanApp.controller;
 
-import com.proyectoGanApp.GanApp.dto.RegisterDto;
-import com.proyectoGanApp.GanApp.dto.ResponseDto;
 import com.proyectoGanApp.GanApp.model.ReviewEntity;
-import com.proyectoGanApp.GanApp.model.TipoUsuario;
-import com.proyectoGanApp.GanApp.model.UserEntity;
 import com.proyectoGanApp.GanApp.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

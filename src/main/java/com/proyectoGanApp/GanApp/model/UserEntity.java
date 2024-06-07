@@ -1,5 +1,6 @@
 package com.proyectoGanApp.GanApp.model;
 
+import com.proyectoGanApp.GanApp.enums.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
