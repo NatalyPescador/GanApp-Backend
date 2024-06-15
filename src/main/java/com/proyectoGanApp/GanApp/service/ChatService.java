@@ -45,9 +45,8 @@ public class ChatService {
     public MessagesEntity sendMessage(MessageRequestDto messageRequest) {
         MessagesEntity msg = new MessagesEntity();
         msg.setChatId(messageRequest.getChatId());
-        msg.setSenderId(messageRequest.getSenderId());
-        msg.setReceiverId(messageRequest.getReceiverId());
         msg.setMessage(messageRequest.getMessage());
+        msg.setSenderId(messageRequest.getSenderId());
         msg.setStatus(MessageStatus.SENT);
         return messagesRepository.save(msg);
     }
