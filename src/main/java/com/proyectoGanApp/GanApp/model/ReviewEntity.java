@@ -22,7 +22,7 @@ public class ReviewEntity {
     private String resena;
 
     @Column(name = "producto_id", nullable = false)
-    private String productoId;
+    private Long productoId;
 
     @Column(name = "usuario_id", nullable = false)
     private String usuarioId;
