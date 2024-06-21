@@ -28,6 +28,27 @@ public class ProductoEntity {
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
 
+    @Column(name = "raza", nullable = false)
+    private String raza;
+
+    @Column(name = "sexo", nullable = false)
+    private String sexo;
+
+    @Column(name = "peso", nullable = false)
+    private String uom;
+
+    @Column(name = "edad", nullable = false)
+    private int edad;
+
+    @Column(name = "cantidad", nullable = false)
+    private int cantidad;
+
+    @Column(name = "departamento", nullable = false)
+    private String departamento;
+
+    @Column(name = "municipio", nullable = false)
+    private String municipio;
+
     @Column(name = "imagen", nullable = false) // Nombre de la imagen
     private String imagen;
 
