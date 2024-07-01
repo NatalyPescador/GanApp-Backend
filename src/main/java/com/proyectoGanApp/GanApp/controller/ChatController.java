@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/GanApp")
@@ -52,6 +53,20 @@ public class ChatController {
         } catch (Exception e) {
             logger.error("Error al obtener los chats del usuario con userId: {}", userId, e);
             return ResponseEntity.status(500).body("Error al obtener los chats del usuario");
+        }
+    }
+
+    @GetMapping("/chat/verifyExists")
+    public ResponseEntity<ChatsEntity> getChatIfExists(
+            @RequestParam Long productId,
+            @RequestParam Long userId,
+            @RequestParam Long receiverId){
+        try {
+            Optional<ChatsEntity> chat = chatService.findChatByDetails(productId, userId, receiverId);
+            System.out.println("Response chat: " + chat.toString());
+            return chat.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        }catch(Exception e){
+            return ResponseEntity.status(500).build();
         }
     }
 

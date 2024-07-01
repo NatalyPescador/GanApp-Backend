@@ -10,4 +10,7 @@ public interface ChatsRepository extends JpaRepository<ChatsEntity, Long> {
     Optional<ChatsEntity> findByProductIdAndUserId(Long productId, Long userId);
 
     List<ChatsEntity> findByUserIdOrReceiverId(Long userId, Long receiverId);
+
+    Optional<ChatsEntity> findByProductIdAndUserIdAndReceiverId(Long productId, Long userId, Long receiverId);
+
 }

@@ -64,4 +64,14 @@ public class ChatService {
             throw e;
         }
     }
+
+    public Optional <ChatsEntity> findChatByDetails(Long productId, Long userId, Long receiverId){
+        try{
+            return chatsRepository.findByProductIdAndUserIdAndReceiverId(productId, userId, receiverId);
+        }
+        catch (Exception e){
+            logger.error("Error while consulting with productId: {}, userId{}, receiverid{}", productId, userId, receiverId);
+            return Optional.empty();
+        }
+    }
 }
