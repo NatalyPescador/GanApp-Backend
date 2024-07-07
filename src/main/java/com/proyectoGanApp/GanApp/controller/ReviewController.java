@@ -1,5 +1,6 @@
 package com.proyectoGanApp.GanApp.controller;
 
+import com.proyectoGanApp.GanApp.dto.ReviewDto;
 import com.proyectoGanApp.GanApp.model.ReviewEntity;
 import com.proyectoGanApp.GanApp.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class ReviewController {
     }
 
     @GetMapping("/reseñas/{productId}")
-    public List<ArrayList> getReviewsByProductId(@PathVariable Long productId) {
+    public List<ReviewDto> getReviewsByProductId(@PathVariable Long productId) {
         return reviewRepository.findReviewsByProductId(productId);
     }
 
