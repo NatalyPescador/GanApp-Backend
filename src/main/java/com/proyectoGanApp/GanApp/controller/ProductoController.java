@@ -2,7 +2,6 @@ package com.proyectoGanApp.GanApp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyectoGanApp.GanApp.model.ProductoEntity;
-import com.proyectoGanApp.GanApp.model.TipoServicioEntity;
 import com.proyectoGanApp.GanApp.repository.ProductoRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/GanApp")
@@ -26,6 +26,16 @@ public class ProductoController {
 
     private final Path rootLocation = Paths.get("uploads");
 
+    @GetMapping("/producto")
+    public List<ProductoEntity> listarProductos() {
+        return productoRepository.findAll();
+    }
+
+    @GetMapping("/producto/{id}")
+    public Optional<ProductoEntity> getProducto(@PathVariable Long id) {
+        return productoRepository.findById(id);
+    }
+
     @PostConstruct
     public void init() {
         try {
@@ -33,10 +43,6 @@ public class ProductoController {
         } catch (IOException e) {
             throw new RuntimeException("Could not initialize storage", e);
         }
-    }
-        @GetMapping("/producto")
-    public List<ProductoEntity> listarProductos() {
-        return productoRepository.findAll();
     }
 
     @PostMapping(value = "/registrar-producto", consumes = "multipart/form-data")

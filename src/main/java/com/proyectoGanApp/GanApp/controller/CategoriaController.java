@@ -3,8 +3,6 @@ package com.proyectoGanApp.GanApp.controller;
 
 import com.proyectoGanApp.GanApp.model.CategoriaEntity;
 import com.proyectoGanApp.GanApp.repository.CategoriaRepository;
-import com.proyectoGanApp.GanApp.repository.UserRepository;
-import java.util.Base64;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
