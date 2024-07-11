@@ -1,5 +1,6 @@
 package com.proyectoGanApp.GanApp.controller;
 
+import com.proyectoGanApp.GanApp.dto.ReviewDto;
 import com.proyectoGanApp.GanApp.model.ReviewEntity;
 import com.proyectoGanApp.GanApp.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,11 +24,16 @@ public class ReviewController {
         return reviewRepository.findAll();
     }
 
+    @GetMapping("/reseñas/{productId}")
+    public List<ReviewDto> getReviewsByProductId(@PathVariable Long productId) {
+        return reviewRepository.findReviewsByProductId(productId);
+    }
+
     @PostMapping("/reseñas")
     public ResponseEntity<ReviewEntity> publishReview(@RequestBody ReviewEntity reviewEntity) {
         ReviewEntity review = ReviewEntity.builder()
                 .resena(reviewEntity.getResena())
-                .productoId("2")
+                .productoId(reviewEntity.getProductoId())
                 .usuarioId("2")
                 .build();
         reviewRepository.save(review);
