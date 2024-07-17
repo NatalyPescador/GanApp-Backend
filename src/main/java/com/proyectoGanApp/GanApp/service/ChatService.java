@@ -45,9 +45,8 @@ public class ChatService {
     public MessagesEntity sendMessage(MessageRequestDto messageRequest) {
         MessagesEntity msg = new MessagesEntity();
         msg.setChatId(messageRequest.getChatId());
-        msg.setSenderId(messageRequest.getSenderId());
-        msg.setReceiverId(messageRequest.getReceiverId());
         msg.setMessage(messageRequest.getMessage());
+        msg.setSenderId(messageRequest.getSenderId());
         msg.setStatus(MessageStatus.SENT);
         return messagesRepository.save(msg);
     }
@@ -63,6 +62,16 @@ public class ChatService {
         } catch (Exception e) {
             logger.error("Error al buscar chats para el userId: {}", userId, e);
             throw e;
+        }
+    }
+
+    public Optional <ChatsEntity> findChatByDetails(Long productId, Long userId, Long receiverId){
+        try{
+            return chatsRepository.findByProductIdAndUserIdAndReceiverId(productId, userId, receiverId);
+        }
+        catch (Exception e){
+            logger.error("Error while consulting with productId: {}, userId{}, receiverid{}", productId, userId, receiverId);
+            return Optional.empty();
         }
     }
 }
