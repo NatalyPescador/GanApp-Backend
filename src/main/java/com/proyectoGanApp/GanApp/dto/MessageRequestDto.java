@@ -7,9 +7,8 @@ import lombok.Data;
 public class MessageRequestDto {
 
     private Long chatId;
-    private Long senderId;
-    private Long receiverId;
     private String message;
+    private Long senderId;
     private MessageStatus status;
 
 }
