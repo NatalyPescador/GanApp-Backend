@@ -36,7 +36,7 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping("/registro")
+    @PostMapping("/register")
     public ResponseEntity<ResponseDto> signIn(@RequestBody RegisterDto request) {
         try {
             ResponseDto response = sessionService.register(request);
@@ -48,7 +48,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/inicio-sesion")
+    @PostMapping("/login")
     public ResponseEntity<ResponseDto> logIn(@RequestBody LoginDto request) {
         try {
             ResponseDto response = sessionService.login(request);
@@ -62,7 +62,7 @@ public class UserController {
 
 
 
-    @PostMapping("/olvidar-contraseña")
+    @PostMapping("/forgot-password")
     public ResponseEntity<ResponseDto> forgotPassword(@RequestBody ForgotPasswordDto request) {
         try {
             ResponseDto response = sessionService.forgotPassword(request);
@@ -74,7 +74,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("restablecer-contraseña")
+    @PostMapping("reset-password")
     public ResponseEntity<ResponseDto> resetPassword(@RequestBody ResetPasswordDto request) {
         try {
             ResponseDto response = sessionService.resetPassword(request);
@@ -98,7 +98,7 @@ public class UserController {
             return null;
         }
     }
-    @PostMapping("/user/upgradeUser")
+    @PostMapping("/upgradeUser")
     public ResponseEntity<String> updateUser(@RequestBody UserDto updatedUser) {
         try {
             userService.updateUser(updatedUser);
