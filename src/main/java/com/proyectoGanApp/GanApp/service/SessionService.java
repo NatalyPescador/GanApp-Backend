@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -49,9 +51,17 @@ public class SessionService {
 
         passwordResetTokenRepository.delete(passwordResetToken);
 
-        String token = jwtComponent.getToken(usuario);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", usuario.getUserId());
+        claims.put("nombreCompleto", usuario.getNombreCompleto());
+        claims.put("correo", usuario.getCorreo());
+        claims.put("numeroTelefono", usuario.getNumeroTelefono());
+
+        TokenResponseDto tokenResponseDto = jwtComponent.getToken(usuario, claims);
+
         return ResponseDto.builder()
-                .token(token)
+                .token(tokenResponseDto.getToken())
+                .expirationTime(tokenResponseDto.getExpirationTime())
                 .build();
     }
 
@@ -70,9 +80,17 @@ public class SessionService {
 
         javaMailSender.send(message);
 
-        String token = jwtComponent.getToken(user);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", user.getUserId());
+        claims.put("nombreCompleto", user.getNombreCompleto());
+        claims.put("correo", user.getCorreo());
+        claims.put("numeroTelefono", user.getNumeroTelefono());
+
+        TokenResponseDto tokenResponseDto = jwtComponent.getToken(user, claims);
+
         return ResponseDto.builder()
-                .token(token)
+                .token(tokenResponseDto.getToken())
+                .expirationTime(tokenResponseDto.getExpirationTime())
                 .build();
     }
 
@@ -101,9 +119,18 @@ public class SessionService {
             throw new RuntimeException("Usuario o contraseña incorrecto");
         }
 
-        String token = jwtComponent.getToken(user);
+        UserEntity userEntity = (UserEntity) user;
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userEntity.getUserId());
+        claims.put("nombreCompleto", userEntity.getNombreCompleto());
+        claims.put("correo", userEntity.getCorreo());
+        claims.put("numeroTelefono", userEntity.getNumeroTelefono());
+
+        TokenResponseDto tokenResponseDto = jwtComponent.getToken(user, claims);
+
         return ResponseDto.builder()
-                .token(token)
+                .token(tokenResponseDto.getToken())
+                .expirationTime(tokenResponseDto.getExpirationTime())
                 .build();
     }
 
@@ -119,8 +146,17 @@ public class SessionService {
 
             userRepository.save(user);
 
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("userId", user.getUserId());
+            claims.put("nombreCompleto", user.getNombreCompleto());
+            claims.put("correo", user.getCorreo());
+            claims.put("numeroTelefono", user.getNumeroTelefono());
+
+            TokenResponseDto tokenResponseDto = jwtComponent.getToken(user, claims);
+
             return ResponseDto.builder()
-                    .token(jwtComponent.getToken(user))
+                    .token(tokenResponseDto.getToken())
+                    .expirationTime(tokenResponseDto.getExpirationTime())
                     .build();
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("El correo ingresado ya se encuentra registrado");
