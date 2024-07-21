@@ -27,7 +27,7 @@ public class JwtComponent {
     }
 
     private TokenResponseDto createToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        long expirationTimeMillis = System.currentTimeMillis() + 1000 * 60 * 24;
+        long expirationTimeMillis = System.currentTimeMillis() + 1000 * 60 * 15;
         Date expirationDate = new Date(expirationTimeMillis);
 
         String token = Jwts
