@@ -1,0 +1,15 @@
+FROM eclipse-termurin:17
+
+LABEL author=codifacil.club
+
+ENV DATABASE_URL jdbc:mysql://192.168.1.9:3306/codibdfacil
+ENV DATABASE_USERNAME codi_user
+ENV DATABASE_PASSWORD UA2UV6CM4CAmWTS
+ENV DATABASE_PLATFORM org.hibernate.dialect.MySQL57Dialect
+ENV DATABASE_DRIVER com.mysql.j. jdbc.Driver
+
+#Previamente realizar un mvn clean package
+COPY target/codifacil-backend-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-jar", "app. jar"]
+#docker build -t codifacil-backend-image:1
+#docker run -p8081:8081 --name codifacil-backend-container codifacil-backend-image: 1.3
