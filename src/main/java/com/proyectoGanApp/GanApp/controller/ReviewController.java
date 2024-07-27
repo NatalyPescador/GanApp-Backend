@@ -34,7 +34,7 @@ public class ReviewController {
         ReviewEntity review = ReviewEntity.builder()
                 .resena(reviewEntity.getResena())
                 .productoId(reviewEntity.getProductoId())
-                .usuarioId("2")
+                .usuarioId(reviewEntity.getUsuarioId())
                 .build();
         reviewRepository.save(review);
 

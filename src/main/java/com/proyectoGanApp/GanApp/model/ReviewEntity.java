@@ -25,5 +25,5 @@ public class ReviewEntity {
     private Long productoId;
 
     @Column(name = "usuario_id", nullable = false)
-    private String usuarioId;
+    private Long usuarioId;
 }
