@@ -1,5 +1,6 @@
 package com.proyectoGanApp.GanApp.jwt;
 
+import com.proyectoGanApp.GanApp.dto.TokenResponseDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,20 +20,28 @@ import java.util.function.Function;
 public class JwtComponent {
 
     private static final String SECRET_KEY="586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public String getToken(UserDetails userDetails) {
-        return getToken(new HashMap<>(), userDetails);
+    public TokenResponseDto getToken(UserDetails userDetails, Map<String, Object> extraClaims) {
+        return createToken(extraClaims, userDetails);
     }
 
-    private String getToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts
+    private TokenResponseDto createToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        long expirationTimeMillis = System.currentTimeMillis() + 1000 * 60 * 15;
+        Date expirationDate = new Date(expirationTimeMillis);
+
+        String token = Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .setExpiration(expirationDate)
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
+
+        String expirationTimeReadable = dateFormat.format(expirationDate);
+
+        return new TokenResponseDto(token, expirationTimeReadable);
     }
 
     private Key getKey() {
@@ -69,4 +79,5 @@ public class JwtComponent {
     private boolean isTokenExpired(String token) {
         return getExpiration(token).before(new Date());
     }
+
 }
