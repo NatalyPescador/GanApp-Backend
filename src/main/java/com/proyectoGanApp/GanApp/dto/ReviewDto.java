@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewDto {
-    private Long usuarioId;
+    private String nombreCompleto;
     private String resena;
 }

@@ -12,6 +12,9 @@ import java.util.List;
 @Repository
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
 
-    @Query("SELECT new com.proyectoGanApp.GanApp.dto.ReviewDto(r.usuarioId, r.resena) FROM ReviewEntity r WHERE r.productoId = :productId")
+    @Query("SELECT new com.proyectoGanApp.GanApp.dto.ReviewDto(u.nombreCompleto, r.resena) " +
+            "FROM ReviewEntity r " +
+            "JOIN UserEntity u ON r.usuarioId = u.userId " +
+            "WHERE r.productoId = :productId")
     List<ReviewDto> findReviewsByProductId(Long productId);
 }
