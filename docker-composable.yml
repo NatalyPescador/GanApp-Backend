@@ -1,10 +1,10 @@
 version: "3"
 services:
   app:
-    container_name: "backcontainer"
+    container_name: "mysqlcontainer"
     build: .
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
       - DATABASE_URL=jdbc:mysql://mysqldb:3306/codibdfacil
       - DATABASE_USERNAME=root
