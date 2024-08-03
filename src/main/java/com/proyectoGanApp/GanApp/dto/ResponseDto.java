@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseDto {
     String token;
+    private String expirationTime;
     private String errorMessage;
 }
