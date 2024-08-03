@@ -4,7 +4,7 @@ services:
     container_name: "mysqlcontainer"
     build: .
     ports:
-      - "8081:8081"
+      - "8080:8080"
     environment:
       - DATABASE_URL=jdbc:mysql://mysqldb:3306/codibdfacil
       - DATABASE_USERNAME=root
@@ -21,7 +21,7 @@ services:
       - ./mysql:/var/lib/mysql
       - mysql-data:/var/lib/mysql
     environment:
-      - MYSQL_DATABASE=codigobdfacil
+      - MYSQL_DATABASE=ganappaplication
       - MYSQL_USER=root
       - MYSQL_PASSWORD=123456
       - MYSQL_ROOT_PASSWORD=123456
