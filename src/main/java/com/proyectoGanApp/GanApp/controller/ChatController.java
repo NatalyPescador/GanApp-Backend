@@ -1,5 +1,6 @@
 package com.proyectoGanApp.GanApp.controller;
 
+import com.proyectoGanApp.GanApp.dto.ChatItemsDto;
 import com.proyectoGanApp.GanApp.dto.ChatRequestDTO;
 import com.proyectoGanApp.GanApp.dto.MessageRequestDto;
 import com.proyectoGanApp.GanApp.model.ChatsEntity;
@@ -70,4 +71,13 @@ public class ChatController {
         }
     }
 
+    @GetMapping("/chat/{userId}")
+    public ResponseEntity<?> getChatDetailsByUserId(@PathVariable Long userId) {
+        try {
+            List<ChatItemsDto> chatItems = chatService.getChatDetailsByUserId(userId);
+            return ResponseEntity.ok(chatItems);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e);
+        }
+    }
 }

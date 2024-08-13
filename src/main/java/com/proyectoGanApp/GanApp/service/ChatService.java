@@ -1,5 +1,6 @@
 package com.proyectoGanApp.GanApp.service;
 
+import com.proyectoGanApp.GanApp.dto.ChatItemsDto;
 import com.proyectoGanApp.GanApp.dto.ChatRequestDTO;
 import com.proyectoGanApp.GanApp.dto.MessageRequestDto;
 import com.proyectoGanApp.GanApp.enums.MessageStatus;
@@ -73,5 +74,9 @@ public class ChatService {
             logger.error("Error while consulting with productId: {}, userId{}, receiverid{}", productId, userId, receiverId);
             return Optional.empty();
         }
+    }
+
+    public List<ChatItemsDto> getChatDetailsByUserId(Long userId) {
+        return chatsRepository.findChatDetailsByUserId(userId);
     }
 }

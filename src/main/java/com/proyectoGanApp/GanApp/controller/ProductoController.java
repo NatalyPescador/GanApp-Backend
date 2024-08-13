@@ -36,6 +36,11 @@ public class ProductoController {
         return productoRepository.findById(id);
     }
 
+    @GetMapping("/productos/{userId}")
+    public List<ProductoEntity> getProductByUserId(@PathVariable Long userId) {
+        return productoRepository.getProductsByUserId(userId);
+    }
+
     @PostConstruct
     public void init() {
         try {
