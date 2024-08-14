@@ -24,6 +24,4 @@ public class CategoriaEntity{
     @Column(name = "tipo_servicio_id", nullable = false)
     private Long tipoServicioId;
 
-
-
 }
