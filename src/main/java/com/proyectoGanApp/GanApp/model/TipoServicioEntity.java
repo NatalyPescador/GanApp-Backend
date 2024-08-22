@@ -1,5 +1,6 @@
 package com.proyectoGanApp.GanApp.model;
 
+import com.proyectoGanApp.GanApp.repository.TipoServicioRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "TipoServicio")
-public class TipoServicioEntity {
+public abstract class TipoServicioEntity implements TipoServicioRepository {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
