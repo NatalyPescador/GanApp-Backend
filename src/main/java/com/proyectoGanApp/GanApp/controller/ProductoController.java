@@ -72,4 +72,20 @@ public class ProductoController {
         return ResponseEntity.ok("Producto registrado con éxito");
 
     }
+
+    @PutMapping("/producto/actualizar/{id}")
+    public ResponseEntity<?> actualizarProducto(@PathVariable Long id, @RequestBody ProductoEntity updatedProduct) {
+        productoRepository.findById(id)
+                .map(product -> {
+                    product.setPrecio(updatedProduct.getPrecio());
+                    product.setDescripcion(updatedProduct.getDescripcion());
+                    product.setRaza(updatedProduct.getRaza());
+                    product.setUom(updatedProduct.getUom());
+                    product.setEdad(updatedProduct.getEdad());
+                    product.setCantidad(updatedProduct.getCantidad());
+                    return productoRepository.save(product);
+                });
+        return ResponseEntity.ok("Información actualizada éxitosamente");
+
+    }
 }
