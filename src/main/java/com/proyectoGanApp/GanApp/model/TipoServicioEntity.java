@@ -1,14 +1,10 @@
 package com.proyectoGanApp.GanApp.model;
 
-import com.proyectoGanApp.GanApp.repository.TipoServicioRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +12,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "TipoServicio")
-public abstract class TipoServicioEntity implements TipoServicioRepository {
+public class TipoServicioEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
