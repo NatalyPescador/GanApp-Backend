@@ -50,6 +50,7 @@ public class ChatController {
         logger.debug("Recibida solicitud para obtener chats del usuario con userId: {}", userId);
         try {
             List<ChatsEntity> chats = chatService.getChatsByUserId(userId);
+            logger.info("Los chats son: {}", chats);
             return ResponseEntity.ok(chats);
         } catch (Exception e) {
             logger.error("Error al obtener los chats del usuario con userId: {}", userId, e);
