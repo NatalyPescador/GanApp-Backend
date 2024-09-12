@@ -2,6 +2,7 @@ package com.proyectoGanApp.GanApp.config;
 
 import com.proyectoGanApp.GanApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
