@@ -41,6 +41,11 @@ public class ProductoController {
         return productoRepository.getProductsByUserId(userId);
     }
 
+    @GetMapping("/productos/tipoServicio/{tipoServicioId}")
+    public List<ProductoEntity> getProductosByTipoServicio(@PathVariable Long tipoServicioId) {
+        return productoRepository.findByTipoServicioId(tipoServicioId);
+    }
+
     @PostConstruct
     public void init() {
         try {
