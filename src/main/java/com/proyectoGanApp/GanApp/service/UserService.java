@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Transactional
     public UserDto getUserById(Long id){
         logger.info("Inicio UserService busqueda de usuario por id: {}", id);
         try {
@@ -37,6 +39,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public void updateUser(UserDto userDto) {
         logger.info("Inicio UserService actualización de usuario con id: {}", id);
         try {
