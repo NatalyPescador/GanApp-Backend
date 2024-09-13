@@ -89,6 +89,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>2.20.40</version> <!-- O última versión estable -->
+		</dependency>
+
+		<!-- AWS SDK para STS, opcional pero útil si manejas credenciales -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>sts</artifactId>
+			<version>2.20.40</version>
+		</dependency>
 	</dependencies>
 
 	<build>

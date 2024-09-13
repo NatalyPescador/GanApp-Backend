@@ -3,13 +3,13 @@ package com.proyectoGanApp.GanApp.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyectoGanApp.GanApp.model.ProductoEntity;
 import com.proyectoGanApp.GanApp.repository.ProductoRepository;
+import com.proyectoGanApp.GanApp.service.S3Service;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,6 +23,9 @@ public class ProductoController {
 
     @Autowired
     private ProductoRepository productoRepository;
+
+    @Autowired
+    private S3Service s3Service;
 
     private final Path rootLocation = Paths.get("uploads");
 
@@ -57,19 +60,22 @@ public class ProductoController {
         ObjectMapper mapper = new ObjectMapper();
         ProductoEntity producto = mapper.readValue(productJson, ProductoEntity.class);
 
-        // Lógica para guardar la imagen
-        String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        Path destinationFile = rootLocation.resolve(filename).normalize().toAbsolutePath();
-        if (!destinationFile.getParent().equals(rootLocation.toAbsolutePath())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot store file outside current directory.");
+        // Subir la imagen a S3 y obtener la URL
+        String imageUrl;
+        try {
+            imageUrl = s3Service.uploadFile(file);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al subir la imagen: " + e.getMessage());
         }
-        file.transferTo(destinationFile);
 
-        // Guarda la ruta de la imagen en el producto
-        producto.setImagen(destinationFile.toString());
+        // Guarda la URL de la imagen en el producto
+        producto.setImagen(imageUrl);
+
         // Guarda el producto en la base de datos
         ProductoEntity savedProduct = productoRepository.save(producto);
-        return ResponseEntity.ok("Producto registrado con éxito");
+
+        return ResponseEntity.ok("Producto registrado con éxito. Imagen URL: " + imageUrl);
 
     }
 
