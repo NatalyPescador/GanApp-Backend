@@ -18,23 +18,18 @@ import java.util.UUID;
 public class S3Service {
 
     private final S3Client s3Client;
+    private final String bucketName;
+    private final String region;
 
-    @Value("${aws.bucket.name}")
-    private String bucketName;
-
-    @Value("${aws.region}")
-    private String region;
-
-
-
+    // Constructor con inyección de valores
     public S3Service(
             @Value("${aws.access.key}") String accessKey,
-            @Value("${aws.secret.key}") String secretKey
-            ) {
-        System.out.println("Access Key: " + accessKey);
-        System.out.println("Secret Key: " + secretKey);
-        System.out.println("Bucket Name: " + bucketName);
-        System.out.println("Region: " + region);
+            @Value("${aws.secret.key}") String secretKey,
+            @Value("${aws.bucket.name}") String bucketName,  // Inyectamos aquí el bucket
+            @Value("${aws.region}") String region            // Inyectamos aquí la región
+    ) {
+        this.bucketName = bucketName;  // Inicializamos la variable de clase
+        this.region = region;          // Inicializamos la variable de clase
 
         AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(accessKey, secretKey);
 
@@ -42,16 +37,21 @@ public class S3Service {
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
                 .build();
+
+        // Imprimir valores para debugging
+        System.out.println("Access Key: " + accessKey);
+        System.out.println("Secret Key: " + secretKey);
+        System.out.println("Bucket Name: " + bucketName);
+        System.out.println("Region: " + region);
     }
 
     // Método para subir el archivo a S3
     public String uploadFile(MultipartFile file) throws IOException {
-        // Genera un nombre único para el archivo usando UUID
         String key = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
         try {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                    .bucket(bucketName)
+                    .bucket(bucketName)  // Usamos la variable `bucketName` inicializada en el constructor
                     .key(key)
                     .build();
 
@@ -59,7 +59,6 @@ public class S3Service {
             PutObjectResponse putObjectResponse = s3Client.putObject(putObjectRequest,
                     software.amazon.awssdk.core.sync.RequestBody.fromBytes(file.getBytes()));
 
-            // Verificar si la subida fue exitosa
             if (putObjectResponse.sdkHttpResponse().isSuccessful()) {
                 return "https://" + bucketName + ".s3." + region + ".amazonaws.com/" + key;
             } else {
