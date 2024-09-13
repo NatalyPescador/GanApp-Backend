@@ -15,9 +15,10 @@ public interface ChatsRepository extends JpaRepository<ChatsEntity, Long> {
 
     Optional<ChatsEntity> findByProductIdAndUserIdAndReceiverId(Long productId, Long userId, Long receiverId);
 
-    @Query("SELECT new com.proyectoGanApp.GanApp.dto.ChatItemsDto(c.chatId, u.nombreCompleto, p.imagen) " +
+    @Query("SELECT new com.proyectoGanApp.GanApp.dto.ChatItemsDto(c.chatId, c.userId, u.nombreCompleto, r.nombreCompleto, p.imagen) " +
             "FROM ChatsEntity c " +
             "JOIN UserEntity u ON c.userId = u.userId " +
+            "JOIN UserEntity r ON c.receiverId = r.userId " + // JOIN adicional para el receptor
             "JOIN ProductoEntity p ON c.productId = p.productoId " +
             "WHERE c.userId = :userId OR c.receiverId = :userId")
     List<ChatItemsDto> findChatDetailsByUserId(Long userId);

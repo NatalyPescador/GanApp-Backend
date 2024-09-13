@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class ChatItemsDto {
 
     public Long chatId;
-    public String nombreCompleto;
+    public Long userId;
+    public String nombreUsuario;
+    public String nombreReceiver;
     public String imagen;
 }

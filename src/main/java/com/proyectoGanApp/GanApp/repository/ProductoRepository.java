@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface ProductoRepository extends JpaRepository<ProductoEntity, Long>{
 
+    @Query("SELECT p FROM ProductoEntity p WHERE p.tipoServicioId = :tipoServicioId")
+    List<ProductoEntity> findByTipoServicioId(Long tipoServicioId);
+
     @Query("SELECT p FROM ProductoEntity p WHERE p.usuarioId = :userId")
     List<ProductoEntity> getProductsByUserId(Long userId);
 
