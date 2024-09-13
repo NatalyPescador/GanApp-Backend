@@ -25,17 +25,16 @@ public class S3Service {
     @Value("${aws.region}")
     private String region;
 
-    @Value("${aws.access.key}")
-    private String accessKey;
 
-    @Value("${aws.secret.key}")
-    private String secretKey;
 
-    public S3Service(S3Client s3Client) {
-        this.s3Client = s3Client;
-    }
-
-    public S3Service() {
+    public S3Service(
+            @Value("${aws.access.key}") String accessKey,
+            @Value("${aws.secret.key}") String secretKey
+            ) {
+        System.out.println("Access Key: " + accessKey);
+        System.out.println("Secret Key: " + secretKey);
+        System.out.println("Bucket Name: " + bucketName);
+        System.out.println("Region: " + region);
 
         AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(accessKey, secretKey);
 
