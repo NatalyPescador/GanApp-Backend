@@ -25,11 +25,11 @@ public class S3Service {
     public S3Service(
             @Value("${aws.access.key}") String accessKey,
             @Value("${aws.secret.key}") String secretKey,
-            @Value("${aws.bucket.name}") String bucketName,  // Inyectamos aquí el bucket
-            @Value("${aws.region}") String region            // Inyectamos aquí la región
+            @Value("${aws.bucket.name}") String bucketName,
+            @Value("${aws.region}") String region
     ) {
-        this.bucketName = bucketName;  // Inicializamos la variable de clase
-        this.region = region;          // Inicializamos la variable de clase
+        this.bucketName = bucketName;
+        this.region = region;
 
         AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(accessKey, secretKey);
 
@@ -45,13 +45,12 @@ public class S3Service {
         System.out.println("Region: " + region);
     }
 
-    // Método para subir el archivo a S3
     public String uploadFile(MultipartFile file) throws IOException {
         String key = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
         try {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                    .bucket(bucketName)  // Usamos la variable `bucketName` inicializada en el constructor
+                    .bucket(bucketName)
                     .key(key)
                     .build();
 

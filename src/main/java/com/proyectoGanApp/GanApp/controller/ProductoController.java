@@ -65,7 +65,6 @@ public class ProductoController {
         ObjectMapper mapper = new ObjectMapper();
         ProductoEntity producto = mapper.readValue(productJson, ProductoEntity.class);
 
-        // Subir la imagen a S3 y obtener la URL
         String imageUrl;
         try {
             imageUrl = s3Service.uploadFile(file);
@@ -74,11 +73,9 @@ public class ProductoController {
                     .body("Error al subir la imagen: " + e.getMessage());
         }
 
-        // Guarda la URL de la imagen en el producto
         producto.setImagen(imageUrl);
 
-        // Guarda el producto en la base de datos
-        ProductoEntity savedProduct = productoRepository.save(producto);
+        productoRepository.save(producto);
 
         return ResponseEntity.ok("Producto registrado con éxito. Imagen URL: " + imageUrl);
 
