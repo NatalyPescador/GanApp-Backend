@@ -96,4 +96,14 @@ public class ProductoController {
         return ResponseEntity.ok("Información actualizada éxitosamente");
 
     }
+
+    @DeleteMapping("/producto/borrar/{id}")
+    public ResponseEntity<?> borrarProducto(@PathVariable Long id) {
+        productoRepository.findById(id)
+                .map(product -> {
+                    productoRepository.delete(product);
+                    return ResponseEntity.ok().build();
+                });
+        return ResponseEntity.ok("Producto eliminado");
+    }
 }
