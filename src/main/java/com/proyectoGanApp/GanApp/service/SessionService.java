@@ -42,7 +42,7 @@ public class SessionService {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(request.getToken());
 
         if (passwordResetToken == null || !passwordResetToken.getToken().equals(request.getToken())) {
-            throw new RuntimeException("El código ingresado es inválido");
+            throw new RuntimeException("El código ingresado no es válido");
         }
 
         UserEntity usuario = passwordResetToken.getUsuario();
